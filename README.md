@@ -110,7 +110,7 @@ services:
       - postgresql
 ```
 
-Alternatively, you can orchestrate your deployment of Taiga via Kubernetes.  The following example kubernetes resource file [taiga.yml](taiga.yml) used in my [Hands-on DevOps class](https://github.com/nemonik/hands-on-DevOps) uses [MetalLB](https://metallb.universe.tf/) load-balancer to expose Taiga on the private 192.168.0.204 IP address on port 80 (http://192.168.0.204):
+Alternatively, you can orchestrate your deployment of Taiga via Kubernetes.  I use a templated version of the kubernetes resource file ([taiga.yml](taiga.yml)) in my [Hands-on DevOps class](https://github.com/nemonik/hands-on-DevOps) to sping up  Taiga on the private 192.168.0.204 IP address:
 
 ```yml
 # Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
