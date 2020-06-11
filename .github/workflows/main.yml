@@ -32,4 +32,4 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           repository: nemonik/taiga
-          tags: latest, $TAG
+          tags: latest, ${{ env.TAG }}
