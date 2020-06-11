@@ -1,6 +1,6 @@
 # Dockerfile file for Taiga
 
-![](https://github.com/actions/nemonik/taiga/workflows/Building%20and%20Pushed/badge.svg)
+![](https://github.com/actions/taiga/workflows/Building%20and%20Pushed/badge.svg)
 
 Taiga is an Open Source project management platform for agile development.
 
