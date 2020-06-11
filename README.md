@@ -42,7 +42,7 @@ dedicated to the back-end.
 
 Taiga is not directly offer as Docker container, but I've authored a container image that collapses both taiga-front-dist and taiga-back behind an NGINX reverse proxy in a single container.
 
-## Pull the [nemonik/taiga:latest](https://hub.docker.com/r/nemonik/taiga)
+## How to pull the [nemonik/taiga:latest](https://hub.docker.com/r/nemonik/taiga) container image
 
 Provided you have [Docker](https://www.docker.com/get-started) installed, enter the following into your command-line:
 
