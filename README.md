@@ -52,7 +52,7 @@ docker pull nemonik/taiga
 
 ## How to use
 
-An example [docker-compose.yml](docker-compose.yml) is provided to demonstrate bring up the Taiga application and it dependent services:
+An example [docker-compose.yml](docker-compose.yml) is provided to demonstrate bringing up the Taiga container and it dependent PostgreSQL database service:
 
 ```yml
 # Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
