@@ -1,3 +1,4 @@
+name: Building and Pushed
 on:
   push:
     branches:
