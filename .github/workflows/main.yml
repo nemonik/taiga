@@ -1,5 +1,7 @@
 name: Building and Pushed
 on:
+  schedule:
+       - cron: "* 23 * * *"   
   push:
     branches:
       - master
