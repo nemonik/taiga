@@ -345,6 +345,7 @@ spec:
 The default admin account username and password are
 
 admin
+ 
 123123
 
 ## Additional content
