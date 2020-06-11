@@ -2,7 +2,7 @@
 
 ![](https://github.com/nemonik/taiga/workflows/Building%20and%20Pushed/badge.svg)
 
-Taiga is an Open Source project management platform for agile development.
+Taiga is an Open Source project management platform for Agile Development.
 
 There are many project management platforms for Agile.
 
