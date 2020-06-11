@@ -40,11 +40,19 @@ https://github.com/taigaio/taiga-back/
 
 dedicated to the back-end.
 
-Taiga doesn't directly offer a Docker container image for, but I've authored a container image that collapses both taiga-front-dist and -back behind an NGINX reverse proxy onto single container.
+Taiga is not directly offer as Docker container, but I've authored a container image that collapses both taiga-front-dist and taiga-back behind an NGINX reverse proxy in a single container.
+
+## Pull the [nemonik/taiga:latest](https://hub.docker.com/r/nemonik/taiga)
+
+Provided you have [Docker](https://www.docker.com/get-started) installed, enter the following into your command-line:
+
+```bash
+docker pull nemonik/taiga
+```
 
 ## How to use
 
-This project contains a [docker-compose.yml](docker-compose.yml) to bring up the Taiga application and it dependent services:
+An example [docker-compose.yml](docker-compose.yml) is provided to demonstrate bring up the Taiga application and it dependent services:
 
 ```yml
 # Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
@@ -102,7 +110,7 @@ services:
       - postgresql
 ```
 
-Alternatively, you can orchestrate your deployment of Taiga via Kubernetes.  A kubernetes resource file [taiga.yml](taiga.yml) is provided:
+Alternatively, you can orchestrate your deployment of Taiga via Kubernetes.  The following example kubernetes resource file [taiga.yml](taiga.yml) used in my [Hands-on DevOps class](https://github.com/nemonik/hands-on-DevOps) uses [MetalLB](https://metallb.universe.tf/) load-balancer to expose Taiga on the private 192.168.0.204 IP address on port 80 (http://192.168.0.204):
 
 ```yml
 # Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
@@ -338,6 +346,10 @@ The default admin account username and password are
 
 admin
 123123
+
+## Additional content
+
+If you're interested in learning more about Taiga and DevOps consider my [Hands-on DevOps Class](https://github.com/nemonik/hands-on-DevOps). 
 
 ## License
 
