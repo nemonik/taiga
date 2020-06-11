@@ -2,6 +2,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - Dockerfile
+      - .github/workflows/main.yml
 
 jobs:
   build:

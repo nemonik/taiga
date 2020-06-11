@@ -44,10 +44,292 @@ Taiga doesn't directly offer a Docker container image for, but I've authored a c
 
 ## How to use
 
-This project contains a `docker-compose.yml` file to bring up the Taiga application and it dependent services:
+This project contains a [docker-compose.yml](docker-compose.yml) to bring up the Taiga application and it dependent services:
 
 ```yml
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <github.com@nemonik.com>
 
+version: "2"
+
+services:
+  postgresql:
+    image:
+      sameersbn/postgresql:10-2
+    restart: always
+    environment:
+      - DB_NAME=taigadb
+      - DB_USER=taiga
+      - DB_PASS=password
+    volumes:
+      - ./volumes/postgresql/var/lib/postgresql:/var/lib/postgresql:Z
+    ports:
+      - "5432"
+
+  taiga:
+    image:
+       nemonik/taiga:latest
+    restart: always
+    environment:
+      - DEBUG=True
+      - HOST=127.0.0.1
+      - PORT=80
+      - SCHEME=http
+      - DB_HOST=postgresql
+      - DB_PORT=5432
+      - DB_NAME=taigadb
+      - DB_USER=taiga
+      - DB_PASSWORD=password
+#      - LDAP_SERVER=ldap://FDQN
+#      - LDAP_PORT=389
+#      - LDAP_BIND_DN=uid=SERVICE ACCOUNT DN
+#      - LDAP_BIND_PASSWORD=PASSWORD
+#      - LDAP_SEARCH_BASE=BASE DN FOR USERS
+#      - LDAP_SEARCH_FILTER_ADDITIONAL=(uid=*)
+#      - LDAP_EMAIL_ATTRIBUTE=mail
+#      - LDAP_FULL_NAME_ATTRIBUTE=cn
+#      - LDAP_USERNAME_ATTRIBUTE=uid
+    volumes:
+      - ./volumes/media:/taiga/media:Z
+      - ./volumes/static:/taiga/static:Z
+    ports:
+      - "80:8080"
+    depends_on:
+      - postgresql
+```
+
+Alternatively, you can orchestrate your deployment of Taiga via Kubernetes.  A kubernetes resource file [taiga.yml](taiga.yml) is provided:
+
+```yml
+# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# You may use, distribute and modify this code under the
+# terms of the the license.
+#
+# You should have received a copy of the license with
+# this file. If not, please email <github.com@nemonik.com>
+
+---
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: taiga
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-local-path-pvc
+  namespace: taiga
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgresql
+  namespace: taiga
+  labels:
+    app: postgresql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+      - name: postgresql
+        image: sameersbn/postgresql:10-2
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DB_NAME
+          value: taigadb
+        - name: DB_USER
+          value: taiga
+        - name: DB_PASS
+          value: password
+        ports:
+        - name: postgres
+          containerPort: 5432
+        volumeMounts:
+        - mountPath: /var/lib/postgresql
+          name: data
+        livenessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - postgres
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          exec:
+            command:
+            - pg_isready
+            - -h
+            - localhost
+            - -U
+            - postgres
+          initialDelaySeconds: 5
+          timeoutSeconds: 1
+      volumes:
+      - name: data
+        persistentVolumeClaim:
+          claimName: postgresql-local-path-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql
+  namespace: taiga
+spec:
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: postgres
+  selector:
+    app: postgresql
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: taiga-static-local-path-pvc
+  namespace: taiga
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: taiga-media-local-path-pvc
+  namespace: taiga
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment  
+metadata:
+  name: taiga
+  namespace: taiga
+  labels:
+    app: taiga
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: taiga
+  template:
+    metadata:
+      labels:
+        app: taiga
+    spec:
+      containers:
+      - name: taiga
+        image: nemonik/taiga:latest
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: DEBUG
+          value: "true"
+        - name: HOST
+          value: 192.168.0.204
+        - name: PORT
+          value: "80"
+        - name: SCHEME
+          value: http
+        - name: DB_HOST
+          value: postgresql
+        - name: DB_PORT
+          value: "5432"
+        - name: DB_NAME
+          value: taigadb
+        - name: DB_USER
+          value: taiga
+        - name: DB_PASSWORD
+          value: password
+        ports:
+        - name: http
+          containerPort: 8080
+        volumeMounts:
+        - mountPath: /taiga/static
+          name: static
+        - mountPath: /taiga/media
+          name: media
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 15
+          failureThreshold: 3
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 300
+          periodSeconds: 10
+          timeoutSeconds: 15
+          failureThreshold: 3
+      volumes:
+      - name: static
+        persistentVolumeClaim:
+          claimName: taiga-static-local-path-pvc
+      - name: media
+        persistentVolumeClaim:
+          claimName: taiga-media-local-path-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: taiga
+  namespace: taiga
+spec:
+  ports:
+    - name: http
+      targetPort: http
+      port: 80
+  selector:
+    app: taiga
+  type: LoadBalancer
+  loadBalancerIP: 192.168.0.204
 ```
 
 ##  Username and password
