@@ -1,4 +1,4 @@
-# Dockerfile file for Taiga
+# Dockerfile file for [nemonik/taiga:latest](https://hub.docker.com/r/nemonik/taiga)
 
 ![](https://github.com/nemonik/taiga/workflows/Building%20and%20Pushed/badge.svg)
 
@@ -57,7 +57,7 @@ docker pull nemonik/taiga
 An example [docker-compose.yml](docker-compose.yml) is provided to demonstrate bringing up the Taiga container and it dependent PostgreSQL database service:
 
 ```yml
-# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2021 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
@@ -115,7 +115,7 @@ services:
 Alternatively, you can orchestrate your deployment of Taiga via Kubernetes.  I use a templated version of the kubernetes resource file ([taiga.yml](taiga.yml)) in my [Hands-on DevOps class](https://github.com/nemonik/hands-on-DevOps) to sping up  Taiga on the private 192.168.0.204 IP address:
 
 ```yml
-# Copyright (C) 2020 Michael Joseph Walsh - All Rights Reserved
+# Copyright (C) 2021 Michael Joseph Walsh - All Rights Reserved
 # You may use, distribute and modify this code under the
 # terms of the the license.
 #
