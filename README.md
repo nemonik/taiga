@@ -1,3 +1,8 @@
+
+Deprecated.  I would suggest you use 
+
+https://github.com/taigaio/taiga-docker
+
 # Dockerfile file for [nemonik/taiga:latest](https://hub.docker.com/r/nemonik/taiga)
 
 ![](https://github.com/nemonik/taiga/workflows/Building%20and%20Pushed/badge.svg)
