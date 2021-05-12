@@ -1,4 +1,4 @@
-Preseently, the v6.x images are not working.  Prior v5.x ones are. Until I figure out why and you do with a docker-compose deployment and want a v6.x deployment I would suggest you use 
+Presently, the v6.x images are not working.  Prior v5.x ones are. Until I figure out why and you do with a docker-compose deployment and want a v6.x deployment I would suggest you use 
 
 https://github.com/taigaio/taiga-docker
 
