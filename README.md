@@ -1,6 +1,9 @@
-Presently, the v6.x images are not working.  Prior v5.x ones are. Until I figure out why and you do with a docker-compose deployment and want a v6.x deployment I would suggest you use 
+I'm archiving this project in favor of my helm-chart for latest releases of Taiga
 
-https://github.com/taigaio/taiga-docker
+https://github.com/nemonik/taiga-helm
+
+Based off the [taiga-docker](https://github.com/taigaio/taiga-docker) project that doesn't yet have an official chart as of this commit. 
+
 
 # Dockerfile file for [nemonik/taiga:latest](https://hub.docker.com/r/nemonik/taiga)
 
